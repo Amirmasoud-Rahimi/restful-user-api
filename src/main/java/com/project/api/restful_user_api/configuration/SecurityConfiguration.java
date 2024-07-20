@@ -5,7 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 @Configuration
 @EnableWebSecurity
@@ -13,14 +16,18 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests(authorizeRequest ->
-                authorizeRequest.requestMatchers("/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-resources/**",
-                                "swagger-ui/index.html")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated());
+        httpSecurity
+                .csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console())) //to show h2 console without authorization
+                .authorizeHttpRequests(authorizeRequest ->
+                        authorizeRequest.requestMatchers("/swagger-ui/**",
+                                        "/v3/api-docs/**",
+                                        "/swagger-resources/**",
+                                        "swagger-ui/index.html",
+                                        "/h2-console/**")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated())
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));//to show h2 console without authorization
 
         return httpSecurity.build();
     }
