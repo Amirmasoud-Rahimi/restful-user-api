@@ -28,6 +28,9 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
+		<jjwt-api.version>0.11.5</jjwt-api.version>
+		<jjwt-impl.version>0.11.5</jjwt-impl.version>
+		<jjwt-jackson.version>0.11.5</jjwt-jackson.version>
 		<springdoc-openapi.version>2.0.2</springdoc-openapi.version> <!-- use version 2.0.2 to match with boot 3.3.1 -->
 	</properties>
 	<dependencies>
@@ -67,6 +70,22 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<!--  JSON Web Token dependencies to encode, decode, and validate the JWT token in the application-->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>${jjwt-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>${jjwt-impl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>${jjwt-jackson.version}</version>
 		</dependency>
 		<!--  Swagger UI dependency-->
 		<dependency>

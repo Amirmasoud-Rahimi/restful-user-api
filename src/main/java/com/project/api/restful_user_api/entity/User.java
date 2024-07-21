@@ -15,14 +15,20 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "USERS") //Table USER is reserved in h2 database
-public class User {
+//implements UserDetails To manage user details related to authentication
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)// automatically generate the primary key value
     @Column(name = "ID", nullable = false, unique = true)
@@ -54,6 +60,39 @@ public class User {
     private Date updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "ROLE_ID",referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID", nullable = false)
     private Role role;
+
+    //returns the user's roles list; it is helpful to manage permissions.
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.getName().toString());
+        return List.of(authority);
+    }
+
+    @Override
+    public String getUsername() {
+        // return field that is used as a username and is unique information about the user.
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
 }
