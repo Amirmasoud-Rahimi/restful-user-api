@@ -1,12 +1,15 @@
 package com.project.api.restful_user_api.service;
 
 import com.project.api.restful_user_api.constant.RoleEnum;
+import com.project.api.restful_user_api.dto.LoginUserDto;
 import com.project.api.restful_user_api.dto.UserDto;
 import com.project.api.restful_user_api.entity.Role;
 import com.project.api.restful_user_api.entity.User;
 import com.project.api.restful_user_api.repository.RoleRepository;
 import com.project.api.restful_user_api.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Methods To manage User entity
+ * @author Amirmasoud Rahimi
+ * @since 1.0.0
+ */
 @Service
 public class UserService {
     private UserRepository userRepository;
@@ -21,6 +29,8 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     private RoleRepository roleRepository;
+
+    private AuthenticationManager authenticationManager;
 
     public User createUser(UserDto userDto, RoleEnum roleName) {
         Optional<Role> optionalRole = roleRepository.findByName(roleName);
@@ -57,5 +67,19 @@ public class UserService {
         List<User> users = new ArrayList<>();
         userRepository.findAll().forEach(users::add);
         return users;
+    }
+
+    //Authenticate Login User
+    public User authenticate(LoginUserDto input) {
+        //if authentication failed throws AuthenticationException
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        input.getEmail(),
+                        input.getPassword()
+                )
+        );
+
+        return userRepository.findByEmail(input.getEmail())
+                .orElseThrow(EntityNotFoundException::new);
     }
 }
