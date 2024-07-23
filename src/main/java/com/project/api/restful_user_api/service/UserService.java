@@ -19,6 +19,7 @@ import java.util.Optional;
 
 /**
  * Methods To manage User entity
+ *
  * @author Amirmasoud Rahimi
  * @since 1.0.0
  */
@@ -88,5 +89,10 @@ public class UserService {
 
         return userRepository.findByEmail(input.getEmail())
                 .orElseThrow(EntityNotFoundException::new);
+    }
+
+    public User findById(Integer id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        return optionalUser.orElseThrow(EntityNotFoundException::new);
     }
 }
