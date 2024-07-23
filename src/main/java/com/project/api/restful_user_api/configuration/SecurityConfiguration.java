@@ -33,14 +33,15 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console())) //to show h2 console without authorization
+                .csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console()) //to show h2 console without authorization
+                        .disable()) // .disable to allow controller request
                 .authorizeHttpRequests(authorizeRequest ->
-                        authorizeRequest.requestMatchers("/swagger-ui/**",
+                        authorizeRequest.requestMatchers("/auth/**",
+                                        "/swagger-ui/**",
                                         "/v3/api-docs/**",
                                         "/swagger-resources/**",
                                         "swagger-ui/index.html",
-                                        "/h2-console/**",
-                                        "/auth/**")
+                                        "/h2-console/**")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated())

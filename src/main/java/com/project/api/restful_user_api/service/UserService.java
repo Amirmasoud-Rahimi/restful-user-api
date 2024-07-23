@@ -24,13 +24,20 @@ import java.util.Optional;
  */
 @Service
 public class UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+        this.authenticationManager = authenticationManager;
+    }
 
     public User createUser(UserDto userDto, RoleEnum roleName) {
         Optional<Role> optionalRole = roleRepository.findByName(roleName);
