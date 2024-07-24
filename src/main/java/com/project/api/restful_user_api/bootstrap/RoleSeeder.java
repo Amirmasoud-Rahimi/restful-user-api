@@ -5,6 +5,7 @@ import com.project.api.restful_user_api.entity.Role;
 import com.project.api.restful_user_api.repository.RoleRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -12,11 +13,20 @@ import java.util.Map;
 import java.util.Optional;
 
 @Component
-public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
+public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent>, Ordered {
     private final RoleRepository roleRepository;
 
     public RoleSeeder(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
+    }
+
+    /**
+     * set priority to invoke event Listener -  The lower the value, the sooner your listener will be invoked
+     * @return integer number
+     */
+    @Override
+    public int getOrder() {
+        return HIGHEST_PRECEDENCE;
     }
 
     @Override
