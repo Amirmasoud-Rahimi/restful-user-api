@@ -10,13 +10,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 /**
  * Methods To generate, decode, or validate a JSON Web token
+ *
  * @author Amirmasoud Rahimi
  * @since 1.0.0
  */
@@ -39,7 +42,8 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        return buildToken(new HashMap<>(), userDetails, jwtExpiration);
+        Map<String, Object> claims = getClaimsFromUserDetails(userDetails);
+        return buildToken(claims, userDetails, jwtExpiration);
     }
 
     public long getExpirationTime() {
@@ -78,5 +82,15 @@ public class JwtService {
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    private Map<String, Object> getClaimsFromUserDetails(UserDetails userDetails) {
+        List<String> roles = new ArrayList<>();
+        userDetails.getAuthorities().forEach(a -> {
+            roles.add(a.getAuthority());
+        });
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", roles);
+        return claims;
     }
 }
