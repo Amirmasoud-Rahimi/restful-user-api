@@ -76,6 +76,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         } catch (Exception exception) {
+            // The JWT exceptions are caught by the GlobalExceptionHandler because we used the handlerExceptionResolver.
             handlerExceptionResolver.resolveException(request, response, null, exception);
         }
     }

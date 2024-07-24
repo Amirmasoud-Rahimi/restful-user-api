@@ -8,6 +8,7 @@ import com.project.api.restful_user_api.entity.User;
 import com.project.api.restful_user_api.service.JwtService;
 import com.project.api.restful_user_api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "AuthenticationController", description = "Authentication operations")
 public class AuthenticationController {
     private final JwtService jwtService;
 
