@@ -23,11 +23,17 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * User entity to define application users
+ * We implement UserDetails interface To manage user details related to authentication
+ *
+ * @author Amirmasoud Rahimi
+ * @since 1.0.0
+ */
 @Getter
 @Setter
 @Entity
 @Table(name = "USERS") //Table USER is reserved in h2 database
-//implements UserDetails To manage user details related to authentication
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)// automatically generate the primary key value
@@ -47,8 +53,13 @@ public class User implements UserDetails {
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
+    /**
+     * For Logical Delete
+     *
+     * @since 1.0.0
+     */
     @NotBlank
-    @Column(name = "IS_ACTIVE", nullable = false) //for Logical Delete
+    @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean isActive;
 
     @CreationTimestamp //sets the field value to the current timestamp when the entity is first saved
@@ -63,16 +74,26 @@ public class User implements UserDetails {
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID", nullable = false)
     private Role role;
 
-    //returns the user's roles list; it is helpful to manage permissions.
+    /**
+     * Returns the user's roles list; it is helpful to manage permissions.
+     *
+     * @return Collection<? extends GrantedAuthority>
+     * @since 1.0.0
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.getName().toString());
         return List.of(authority);
     }
 
+    /**
+     * Returns field that is used as a username and is unique information about the user.
+     *
+     * @return username
+     * @since 1.0.0
+     */
     @Override
     public String getUsername() {
-        // return field that is used as a username and is unique information about the user.
         return this.email;
     }
 

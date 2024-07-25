@@ -19,13 +19,13 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import java.io.IOException;
 
 /**
- * retrieve the JWT token in the header "Authorization", and validate it
- * reject the request if the token is invalid or continues otherwise.
- * If the token is valid, extract the username, find the related user in the database,
- * and set it in the authentication context, so you can access it in any application layer
+ * Retrieve the JWT token in the header "Authorization", and validate it.
+ * Reject the request if the token is invalid or continues otherwise.
+ * If the token is valid, extract the username, find the related user in the database
+ * and set it in the authentication context, so you can access it in any application layer.
  *
  * @author Amirmasoud Rahimi
- * @since 1.00
+ * @since 1.0.0
  */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -41,6 +41,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.handlerExceptionResolver = handlerExceptionResolver;
     }
 
+    /**
+     * Retrieve the JWT token in the header "Authorization", and validate it.
+     *
+     * @param request
+     * @param response
+     * @param filterChain
+     * @throws ServletException
+     * @throws IOException
+     * @since 1.0.0
+     */
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,

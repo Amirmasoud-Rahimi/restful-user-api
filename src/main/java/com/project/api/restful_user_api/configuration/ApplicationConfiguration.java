@@ -12,10 +12,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
- * Perform the authentication by finding the user in our database and
+ * Perform the authentication by finding the user in the database and
  * Generate a JWT token when the authentication succeeds.
- * after adding this class we will not see the password generated in the console as before.
- * because the authentication method being overridden .
+ * after adding this class we will not see the password generated in the console as before because the authentication method being overridden .
+ *
+ * @author Amirmasoud Rahimi
+ * @since 1.0.0
  */
 @Configuration
 public class ApplicationConfiguration {
@@ -26,9 +28,10 @@ public class ApplicationConfiguration {
     }
 
     /**
-     * defines how to retrieve the user using the UserRepository that is injected
+     * Defines how to retrieve the user using the UserRepository that is injected
      *
      * @return UserDetailsService
+     * @since 1.0.0
      */
     @Bean
     UserDetailsService userDetailsService() {
@@ -37,9 +40,11 @@ public class ApplicationConfiguration {
     }
 
     /**
-     * creates an instance of the BCryptPasswordEncoder used to encode the plain user password
+     * Creates an instance of the BCryptPasswordEncoder used to encode the plain user password
+     * BCrypt is a one-way strong hashing function
      *
      * @return BCryptPasswordEncoder
+     * @since 1.0.0
      */
     @Bean
     BCryptPasswordEncoder passwordEncoder() {
@@ -47,10 +52,12 @@ public class ApplicationConfiguration {
     }
 
     /**
-     * manage authentication configuration
+     * Manage authentication configuration
+     *
      * @param config
      * @return AuthenticationManager
      * @throws Exception
+     * @since 1.0.0
      */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
@@ -58,9 +65,10 @@ public class ApplicationConfiguration {
     }
 
     /**
-     * sets the new strategy to perform the authentication
+     * Sets the new strategy to perform the authentication
      *
      * @return AuthenticationProvider
+     * @since 1.0.0
      */
     @Bean
     AuthenticationProvider authenticationProvider() {

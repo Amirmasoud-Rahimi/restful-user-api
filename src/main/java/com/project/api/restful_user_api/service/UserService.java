@@ -40,6 +40,12 @@ public class UserService {
         this.authenticationManager = authenticationManager;
     }
 
+    /**
+     *
+     * @param userDto
+     * @param roleName
+     * @return
+     */
     public User createUser(UserDto userDto, RoleEnum roleName) {
         Optional<Role> optionalRole = roleRepository.findByName(roleName);
 
@@ -53,6 +59,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    /**
+     *
+     * @param userDto
+     * @return
+     */
     public User updateUser(UserDto userDto) {
         Optional<User> optionalUser = userRepository.findById(userDto.getId());
 
@@ -64,6 +75,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    /**
+     *
+     * @param userId
+     */
     public void deleteUser(Integer userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         User user = optionalUser.orElseThrow(EntityNotFoundException::new);
@@ -71,12 +86,21 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     *
+     * @return
+     */
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         userRepository.findAll().forEach(users::add);
         return users;
     }
 
+    /**
+     *
+     * @param input
+     * @return
+     */
     //Authenticate Login User
     public User authenticate(LoginUserDto input) {
         //if authentication failed throws AuthenticationException
@@ -91,6 +115,11 @@ public class UserService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public User findById(Integer id) {
         Optional<User> optionalUser = userRepository.findById(id);
         return optionalUser.orElseThrow(EntityNotFoundException::new);

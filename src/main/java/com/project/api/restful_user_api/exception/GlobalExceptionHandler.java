@@ -10,6 +10,13 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * To handle application errors, we must use the Spring global exception handler to catch the exception thrown
+ * and customize the response to send to the client.
+ *
+ * @author Amirmasoud Rahimi
+ * @since 1.0.0
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)

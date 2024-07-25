@@ -14,6 +14,12 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.List;
 
+/**
+ * RESTful API using Spring Boot 3.3.2 with JWT authentication to Manage User Entity
+ *
+ * @author Amirmasoud Rahimi
+ * @since 1.0.0
+ */
 @SpringBootApplication
 public class RestfulUserApiApplication {
 
@@ -21,7 +27,12 @@ public class RestfulUserApiApplication {
         SpringApplication.run(RestfulUserApiApplication.class, args);
     }
 
-    //Swagger UI Documentation Info
+    /**
+     * Set Swagger UI documentation info and define JWT security scheme
+     *
+     * @return OpenAPI
+     * @since 1.0.0
+     */
     @Bean
     public OpenAPI myOpenAPI() {
         Contact contact = new Contact();

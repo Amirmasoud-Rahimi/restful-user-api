@@ -13,12 +13,20 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+/**
+ * Create user with super-admin role and default properties on application startup.
+ * Super Admin User has privilege to create administrator in AdminController.
+ * You can invoke an evenListener class sooner than others with implement Ordered interface and override getOrder().
+ *
+ * @author Amirmasoud Rahimi
+ * @since 1.0.0
+ */
 @Component
 public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent>, Ordered {
-    private static final Integer SUPER_ADMIN_ID = 777;
     private static final String SUPER_ADMIN_EMAIL = "super.admin@test.com";
     private static final String SUPER_ADMIN_FULL_NAME = "SuperAdmin Admin";
     private static final String SUPER_ADMIN_PASSWORD = "super@admin";
+
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -30,19 +38,33 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent>, 
     }
 
     /**
-     * set priority to invoke event Listener -  The lower the value, the sooner your listener will be invoked
-     * @return integer number
+     * Set priority to invoke event Listener on application startup.
+     * The lower the value , the sooner your listener will be invoked.
+     *
+     * @return integer number (LOWEST_PRECEDENCE means your listener will be invoked sooner than others and has last priority)
+     * @since 1.0.0
      */
     @Override
     public int getOrder() {
         return LOWEST_PRECEDENCE;
     }
 
+    /**
+     * Run on application startup
+     *
+     * @param contextRefreshedEvent
+     * @since 1.0.0
+     */
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         this.createSuperAdministrator();
     }
 
+    /**
+     * Create user with super-admin role and default properties
+     *
+     * @since 1.0.0
+     */
     private void createSuperAdministrator() {
         Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.SUPER_ADMIN);
         Optional<User> optionalUser = userRepository.findByEmail(SUPER_ADMIN_EMAIL);

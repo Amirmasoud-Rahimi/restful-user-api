@@ -12,6 +12,13 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Create and save roles (USER,ADMIN,SUPER_ADMIN) and descriptions in database on application startup.
+ * You can invoke an evenListener class sooner than others with implement Ordered interface and override getOrder().
+ *
+ * @author Amirmasoud Rahimi
+ * @since 1.0.0
+ */
 @Component
 public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent>, Ordered {
     private final RoleRepository roleRepository;
@@ -21,19 +28,33 @@ public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent>, O
     }
 
     /**
-     * set priority to invoke event Listener -  The lower the value, the sooner your listener will be invoked
-     * @return integer number
+     * Set priority to invoke event Listener on application startup.
+     * The lower the value , the sooner your listener will be invoked.
+     *
+     * @return integer number (LOWEST_PRECEDENCE means your listener will be invoked sooner than others and has last priority)
+     * @since 1.0.0
      */
     @Override
     public int getOrder() {
         return HIGHEST_PRECEDENCE;
     }
 
+    /**
+     * Run on application startup
+     *
+     * @param contextRefreshedEvent
+     * @since 1.0.0
+     */
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         this.loadRoles();
     }
 
+    /**
+     * Create user with super-admin role and default properties
+     *
+     * @since 1.0.0
+     */
     private void loadRoles() {
         RoleEnum[] roleNames = new RoleEnum[]{RoleEnum.USER, RoleEnum.ADMIN, RoleEnum.SUPER_ADMIN};
         Map<RoleEnum, String> roleDescriptionMap = Map.of(
@@ -47,10 +68,8 @@ public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent>, O
 
             optionalRole.ifPresentOrElse(System.out::println, () -> {
                 Role roleToCreate = new Role();
-
                 roleToCreate.setName(roleName);
                 roleToCreate.setDescription(roleDescriptionMap.get(roleName));
-
                 roleRepository.save(roleToCreate);
             });
         });

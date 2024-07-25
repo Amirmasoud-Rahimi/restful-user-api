@@ -15,6 +15,12 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 
+/**
+ * Role entity to define users roles and implement authorization based on roles.
+ *
+ * @author Amirmasoud Rahimi
+ * @since 1.0.0
+ */
 @Getter
 @Setter
 @Entity

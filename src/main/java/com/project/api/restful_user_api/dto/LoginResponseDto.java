@@ -6,6 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Set JWT token in response dto.
+ *
+ * @author Amirmasoud Rahimi
+ * @since 1.0.0
+ */
 @Getter
 @Setter
 @Builder
