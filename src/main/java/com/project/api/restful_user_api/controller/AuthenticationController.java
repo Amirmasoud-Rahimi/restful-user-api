@@ -9,11 +9,15 @@ import com.project.api.restful_user_api.service.JwtService;
 import com.project.api.restful_user_api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/auth")
@@ -32,6 +36,9 @@ public class AuthenticationController {
     @PostMapping("/signUp")
     public ResponseEntity<User> register(@RequestBody UserDto registerUserDto) {
         User registeredUser = userService.createUser(registerUserDto, RoleEnum.USER);
+        Link link = linkTo(methodOn(AuthenticationController.class).authenticate(new LoginUserDto())).withRel("signIn");
+        registeredUser.add(link);
+
         return ResponseEntity.ok(registeredUser);
     }
 
@@ -55,6 +62,9 @@ public class AuthenticationController {
     @PostMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody UserDto userDto) {
         User updateUser = userService.updateUser(userDto);
+        Link link = linkTo(methodOn(AuthenticationController.class).register(userDto)).withRel("signUp");
+        updateUser.add(link);
+
         return ResponseEntity.ok(updateUser);
     }
 }

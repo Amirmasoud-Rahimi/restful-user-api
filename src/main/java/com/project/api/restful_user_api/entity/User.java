@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +26,8 @@ import java.util.List;
 
 /**
  * User entity to define application users
- * We implement UserDetails interface To manage user details related to authentication
+ * We implement UserDetails interface to manage user details related to authentication
+ * We extends RepresentationModel<T> to add hateoas to controller response
  *
  * @author Amirmasoud Rahimi
  * @since 1.0.0
@@ -34,7 +36,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "USERS") //Table USER is reserved in h2 database
-public class User implements UserDetails {
+public class User extends RepresentationModel<User> implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)// automatically generate the primary key value
     @Column(name = "ID", nullable = false, unique = true)
