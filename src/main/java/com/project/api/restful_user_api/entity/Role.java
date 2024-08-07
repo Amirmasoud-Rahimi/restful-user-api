@@ -1,6 +1,7 @@
 package com.project.api.restful_user_api.entity;
 
 import com.project.api.restful_user_api.constant.RoleEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,6 +26,8 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "ROLE")
+@Schema(title = "Role Entity",
+        description = "The Role Model represents information about the users roles in api that use for authorization")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

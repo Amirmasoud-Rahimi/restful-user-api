@@ -1,5 +1,6 @@
 package com.project.api.restful_user_api.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,6 +37,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "USERS") //Table USER is reserved in h2 database
+@Schema(title = "User Entity",
+        description = "The User Model represents information about the user who authenticates and uses the api")
 public class User extends RepresentationModel<User> implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)// automatically generate the primary key value

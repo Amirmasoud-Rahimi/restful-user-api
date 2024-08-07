@@ -8,6 +8,11 @@ import com.project.api.restful_user_api.entity.User;
 import com.project.api.restful_user_api.service.JwtService;
 import com.project.api.restful_user_api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +26,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/auth")
-@Tag(name = "AuthenticationController", description = "Authentication operations")
+@Tag(name = "AuthenticationController",
+        description = "Contains all the authentication operations")
+@ApiResponses(
+        {
+                @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = User.class), mediaType = "application/json")}),
+                @ApiResponse(responseCode = "404", description = "The User with given Id was not found"),
+                @ApiResponse(responseCode = "500", description = "Unknown internal server error")
+        })
 public class AuthenticationController {
     private final JwtService jwtService;
 
@@ -32,19 +44,23 @@ public class AuthenticationController {
         this.userService = userService;
     }
 
-    @Operation(summary = "signUp", description = "signUp user")
+    @Operation(summary = "signUp",
+            description = "This method creates a new user")
     @PostMapping("/signUp")
-    public ResponseEntity<User> register(@RequestBody UserDto registerUserDto) {
+    public ResponseEntity<User> signUp(@Parameter(description = "New User information to persist in database")
+                                             @RequestBody UserDto registerUserDto) {
         User registeredUser = userService.createUser(registerUserDto, RoleEnum.USER);
-        Link link = linkTo(methodOn(AuthenticationController.class).authenticate(new LoginUserDto())).withRel("signIn");
+        Link link = linkTo(methodOn(AuthenticationController.class).signIn(new LoginUserDto())).withRel("signIn");
         registeredUser.add(link);
 
         return ResponseEntity.ok(registeredUser);
     }
 
-    @Operation(summary = "signIn", description = "signIn user")
+    @Operation(summary = "signIn",
+            description = "This method authenticates the api user")
     @PostMapping("/signIn")
-    public ResponseEntity<LoginResponseDto> authenticate(@RequestBody LoginUserDto loginUserDto) {
+    public ResponseEntity<LoginResponseDto> signIn(@Parameter(description = "User login information to use api")
+                                                       @RequestBody LoginUserDto loginUserDto) {
         User authenticatedUser = userService.authenticate(loginUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
@@ -58,11 +74,13 @@ public class AuthenticationController {
         return ResponseEntity.ok(loginResponse);
     }
 
-    @Operation(summary = "update", description = "update user")
+    @Operation(summary = "update",
+            description = "This method updates api user")
     @PostMapping("/update")
-    public ResponseEntity<User> updateUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<User> updateUser(@Parameter(description = "User information to update in database")
+                                               @RequestBody UserDto userDto) {
         User updateUser = userService.updateUser(userDto);
-        Link link = linkTo(methodOn(AuthenticationController.class).register(userDto)).withRel("signUp");
+        Link link = linkTo(methodOn(AuthenticationController.class).signUp(userDto)).withRel("signUp");
         updateUser.add(link);
 
         return ResponseEntity.ok(updateUser);
