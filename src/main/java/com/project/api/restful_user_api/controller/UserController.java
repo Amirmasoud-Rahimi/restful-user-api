@@ -71,7 +71,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("/greeting/{id}")
     @Operation(summary = "welcomeUser",
-            description = "This method show welcome message to user")
+            description = "This method shows welcome message to user")
     public ResponseEntity<String> welcomeUser(@Parameter(description = "User id to find in database") @PathVariable Integer id) {
         User user = userService.findById(id);
         String message = "Hello Dear User : " + user.getFullName();

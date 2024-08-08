@@ -41,7 +41,7 @@ public class AdminController {
             })
     @PostMapping
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    public ResponseEntity<User> createAdministrator(@Parameter(description = "New admin information to persist in database")
+    public ResponseEntity<User> createAdministrator(@Parameter(description = "New user information to persist in database")
                                                     @RequestBody UserDto registerUserDto) {
         User createdAdmin = userService.createUser(registerUserDto, RoleEnum.ADMIN);
         return ResponseEntity.ok(createdAdmin);

@@ -57,9 +57,9 @@ public class AuthenticationController {
     }
 
     @Operation(summary = "signIn",
-            description = "This method authenticates the api user")
+            description = "This method authenticates user")
     @PostMapping("/signIn")
-    public ResponseEntity<LoginResponseDto> signIn(@Parameter(description = "User login information to use api")
+    public ResponseEntity<LoginResponseDto> signIn(@Parameter(description = "User login information")
                                                        @RequestBody LoginUserDto loginUserDto) {
         User authenticatedUser = userService.authenticate(loginUserDto);
 
@@ -75,7 +75,7 @@ public class AuthenticationController {
     }
 
     @Operation(summary = "update",
-            description = "This method updates api user")
+            description = "This method updates user")
     @PostMapping("/update")
     public ResponseEntity<User> updateUser(@Parameter(description = "User information to update in database")
                                                @RequestBody UserDto userDto) {
