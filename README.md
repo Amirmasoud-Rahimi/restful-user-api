@@ -60,7 +60,7 @@
 - Add **MAVEN_HOME** and **Maven path** to environment variables
  
 **Run API**
-- Clone **restful-user-api** repository using `Git Clone https://github.com/Amirmasoud-Rahimi/restful-user-api`
+- Clone **restful-user-api** repository using `git clone https://github.com/Amirmasoud-Rahimi/restful-user-api`
 - Navigate to Project Directory
 - Build the project using `mvn clean install`
 - Run the project using `mvn spring-boot:run`
@@ -68,7 +68,7 @@
 - Swagger UI is accessible vai <http://localhost:8585/swagger-ui/index.html>
 - H2 in-memory database console is accessible vai "http://localhost:8585/h2-console"
 - Use *username* as **user** and *password* as **password** to log in to h2-console
-- Use *username* as *super.admin@test.com* and *password* as *super@admin* to log in with a SUPER-ADMIN user privilege.
+- Use *username* as *super.admin@test.com* and *password* as **super@admin** to log in with a SUPER-ADMIN user privilege.
 
 ### Set Up The Project
 ***Generate new Spring boot project in <https://start.spring.io/> with below dependencies and details:***
