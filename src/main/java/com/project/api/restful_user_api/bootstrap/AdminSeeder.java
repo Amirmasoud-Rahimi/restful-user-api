@@ -25,7 +25,7 @@ import java.util.Optional;
 public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent>, Ordered {
     private static final String SUPER_ADMIN_EMAIL = "super.admin@test.com";
     private static final String SUPER_ADMIN_FULL_NAME = "SuperAdmin Admin";
-    private static final String SUPER_ADMIN_PASSWORD = "super@admin";
+    private static final String SUPER_ADMIN_PASSWORD = "super1@dmin";
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;

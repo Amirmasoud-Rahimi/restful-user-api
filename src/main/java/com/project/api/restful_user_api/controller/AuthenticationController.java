@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,7 +49,7 @@ public class AuthenticationController {
             description = "This method creates a new user")
     @PostMapping("/signUp")
     public ResponseEntity<User> signUp(@Parameter(description = "New User information to persist in database")
-                                             @RequestBody UserDto registerUserDto) {
+                                       @Valid @RequestBody UserDto registerUserDto) {
         User registeredUser = userService.createUser(registerUserDto, RoleEnum.USER);
         Link link = linkTo(methodOn(AuthenticationController.class).signIn(new LoginUserDto())).withRel("signIn");
         registeredUser.add(link);
@@ -60,7 +61,7 @@ public class AuthenticationController {
             description = "This method authenticates user")
     @PostMapping("/signIn")
     public ResponseEntity<LoginResponseDto> signIn(@Parameter(description = "User login information")
-                                                       @RequestBody LoginUserDto loginUserDto) {
+                                                   @Valid @RequestBody LoginUserDto loginUserDto) {
         User authenticatedUser = userService.authenticate(loginUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
@@ -78,7 +79,7 @@ public class AuthenticationController {
             description = "This method updates user")
     @PostMapping("/update")
     public ResponseEntity<User> updateUser(@Parameter(description = "User information to update in database")
-                                               @RequestBody UserDto userDto) {
+                                           @Valid @RequestBody UserDto userDto) {
         User updateUser = userService.updateUser(userDto);
         Link link = linkTo(methodOn(AuthenticationController.class).signUp(userDto)).withRel("signUp");
         updateUser.add(link);

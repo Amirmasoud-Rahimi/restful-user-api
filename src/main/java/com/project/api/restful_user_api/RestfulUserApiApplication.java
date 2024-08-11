@@ -56,7 +56,7 @@ public class RestfulUserApiApplication {
                 .title("RESTful User API")
                 .contact(contact)
                 .version("1.0.0")
-                .description("This API exposes endpoints for users to manage their tasks.")
+                .description("This API exposes endpoints to manage user.")
                 .license(mitLicense);
 
         // Define JWT Security Scheme

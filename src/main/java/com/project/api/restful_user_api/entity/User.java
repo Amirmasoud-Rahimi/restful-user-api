@@ -9,8 +9,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,7 +39,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "USERS") //Table USER is reserved in h2 database
+@Table(name = "USERS",uniqueConstraints={@UniqueConstraint(columnNames={"email"})}) //Table USER is reserved in h2 database
 @Schema(title = "User Entity",
         description = "The User Model represents information about the user who authenticates and uses the api")
 public class User extends RepresentationModel<User> implements UserDetails {
@@ -45,16 +48,17 @@ public class User extends RepresentationModel<User> implements UserDetails {
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
-    @Size(min = 3, max = 128)
+    @Size(min = 3, max = 128, message = "The length of full name must be between 3 and 128 characters.")
+    @NotEmpty(message = "The full name is required.")
     @Column(name = "FULL_NAME", nullable = false)
     private String fullName;
 
-    @Email
-    @NotBlank
+    @Email(message = "The email address is invalid.", flags = {Pattern.Flag.CASE_INSENSITIVE})
+    @NotEmpty(message = "The email is required.")
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
-    @NotBlank
+    @NotEmpty(message = "The password is required.")
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
@@ -63,7 +67,7 @@ public class User extends RepresentationModel<User> implements UserDetails {
      *
      * @since 1.0.0
      */
-    @NotBlank
+    @NotNull
     @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean isActive;
 
@@ -75,6 +79,7 @@ public class User extends RepresentationModel<User> implements UserDetails {
     @Column(name = "UPDATED_AT")
     private Date updatedAt;
 
+    @NotNull(message = "The role is required.")
     @ManyToOne
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID", nullable = false)
     private Role role;
