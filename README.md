@@ -111,9 +111,7 @@
  
  `git fetch`
  
- `git pull origin master --allow-unrelated-histories`
- 
- `git push --set-upstream origin master`
+ `git push -f origin master`
 
 ## Development
 - Configure the database connection
